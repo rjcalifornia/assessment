@@ -37,6 +37,7 @@ if ($new_question) {
 $question->title = $title;
 $question->owner_guid = elgg_get_logged_in_user_guid();
 $question->container_guid = (int)get_input('container_guid');
+$question->access_id = $assessment->access_id;
 $result = $question->save();
 
 if($answers != null)
@@ -63,6 +64,7 @@ foreach ($answers as $key => $val) {
     $options->title = $answers[$i];
     
     $options->container_guid = $question->guid;
+    $options->access_id = $assessment->access_id;
     $options->save();
     $i++;
     }

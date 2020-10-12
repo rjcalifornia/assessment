@@ -5,9 +5,12 @@ elgg_register_event_handler('init', 'system', 'assessment_init');
 
 function assessment_init() {
     elgg_register_page_handler('assessment', 'assessment_page_handler');
+    elgg_register_page_handler('questions', 'questions_page_handler');
     elgg_register_library('elgg:assessment', __DIR__ . '/lib/assessment.php');
     
     elgg_register_plugin_hook_handler('entity:url', 'object', 'assessment_set_url');
+    
+    elgg_register_plugin_hook_handler('entity:url', 'object', 'questions_set_url');
     
     $action_base = __DIR__ . '/actions/assessment';
     elgg_register_action('assessment/save', "$action_base/save.php");
@@ -55,6 +58,12 @@ function assessment_page_handler($page) {
 			
 			echo elgg_view_resource('assessment/view', $resource_vars);
 			break;
+                    
+                case 'preview':
+			$resource_vars['guid'] = elgg_extract(1, $page);
+			
+			echo elgg_view_resource('questions/view', $resource_vars);
+			break;
 		case 'add':
 			$resource_vars['guid'] = elgg_extract(1, $page);
 			
@@ -89,11 +98,48 @@ function assessment_page_handler($page) {
 	return true;
 }
 
+
+function questions_page_handler($page) {
+
+	elgg_load_library('elgg:assessment');
+
+	// push all blogs breadcrumb
+	//elgg_push_breadcrumb(elgg_echo('assessment:assessment'), 'questions/all');
+
+	$page_type = elgg_extract(0, $page, 'all');
+	$resource_vars = [
+		'page_type' => $page_type,
+	];
+
+	switch ($page_type) {
+                
+                case 'view':
+			$resource_vars['guid'] = elgg_extract(1, $page);
+			
+			echo elgg_view_resource('questions/view', $resource_vars);
+			break;
+                
+		default:
+			return false;
+	}
+
+	return true;
+}
+
+
 function assessment_set_url($hook, $type, $url, $params) {
 	$entity = $params['entity'];
 	if (elgg_instanceof($entity, 'object', 'assessment')) {
 		$friendly_title = elgg_get_friendly_title($entity->title);
 		return "assessment/view/{$entity->guid}/$friendly_title";
+	}
+}
+
+function questions_set_url($hook, $type, $url, $params) {
+	$entity = $params['entity'];
+	if (elgg_instanceof($entity, 'object', 'questions')) {
+		$friendly_title = elgg_get_friendly_title($entity->title);
+		return "questions/view/{$entity->guid}/$friendly_title";
 	}
 }
 

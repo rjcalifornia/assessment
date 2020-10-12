@@ -157,7 +157,7 @@ $label= elgg_echo('assessment:add_question');
 
 
 ?>
-<div class="col-md-12" style="padding:45px;">
+<div class="col-md-12" style="padding:15px;">
 <h2 class="assessment-questions"> 
               
     <?php
