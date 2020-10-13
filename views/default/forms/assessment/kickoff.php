@@ -8,9 +8,9 @@
 
 
 $assessment = get_entity($vars['guid']);
-
-echo $assessment->guid;
-
+echo elgg_view('assessment/formcss');
+//echo $assessment->guid;
+$i = 0;
 $guid = $assessment->guid;
 
 $questions = array(
@@ -25,15 +25,20 @@ $questions = array(
 'preload_containers' => true,
 );
 
+$questionTitle = elgg_echo('assessment:takeoff:question');
+
 $allQuestions = elgg_get_entities($questions);
 
 foreach ($allQuestions as $q) {
-    echo '<div style="margin-bottom: 48px;">';
+   $i++; 
+echo <<<___HTML
+<div class="col-md-12 padding-0 box-v7-comment">
+    <b>$questionTitle $i:</b>
+        $q->title
     
-    echo '<p>';
-    echo $q->title;
-    echo '</p>';
-    
+
+___HTML;
+
  $choices =   array(
 'type' => 'object',
 'subtype' => 'options',
@@ -48,8 +53,28 @@ foreach ($allQuestions as $q) {
  
  $allChoices = elgg_get_entities($choices);
 foreach ($allChoices as $c) {
-   echo $c->title;
-   echo '</br>';
+echo <<<___HTML
+    
+      <div class="col-sm-12 padding-0">
+              <input type="radio" name="radio-$q->guid" value="$c->title"/>$c->title
+
+    
+   </br>
+        </div>
+        
+___HTML;
 }
-    echo '</div>';
+echo <<<___HTML
+</div>
+___HTML;
 }
+   
+echo <<<___HTML
+
+$containerInput
+
+___HTML;
+
+    
+
+
