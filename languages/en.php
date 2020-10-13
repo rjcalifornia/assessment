@@ -13,7 +13,13 @@ return array(
     'assessment:minutes'=>'minutes',
     'assessment:add_option'=>'Add more options',
     'assessment:question_content'=>'Add a new question',
+    'river:create:object:assessment' => '%s added a new assessment %s',
+    'assessment:questions_options'=>'Assessment\'s questions',
+    'assessment:group'=>'Group assesments',
     ''=>'',
-    
+    ''=>'',
+    ''=>'',
+    ''=>'',
+
     
 );

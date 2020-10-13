@@ -88,6 +88,13 @@ function assessment_page_handler($page) {
 			
 			echo elgg_view_resource('assessment/add_question', $resource_vars);
 			break;
+                    
+                case 'kickoff':
+			$resource_vars['guid'] = elgg_extract(1, $page);
+			
+			echo elgg_view_resource('assessment/kickoff', $resource_vars);
+			break;
+                    
 		case 'all':
 			echo elgg_view_resource('assessment/all', $resource_vars);
 			break;

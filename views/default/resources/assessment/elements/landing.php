@@ -19,6 +19,10 @@ $owner = $details->getOwnerEntity();
 
 
 $add_url = "{$siteUrl}assessment/add_question/{$assessment->guid}";
+
+$startUrl = "{$siteUrl}assessment/kickoff/{$assessment->guid}";
+
+
 	$add_link = elgg_view('output/url', array(
 		'href' => $add_url,
 		'text' => elgg_echo('assessment:add_question'),
@@ -211,6 +215,13 @@ foreach ($newtest as $value) {
     echo '</br>';
     
 }*/
-
+else{
 ?>
 
+ <a href="<?php echo $startUrl; ?>" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
+   <span class="fa fa-check-circle-o"></span>
+       <?php echo elgg_echo('assessment:start'); ?>
+   </a>
+
+<?php
+}
