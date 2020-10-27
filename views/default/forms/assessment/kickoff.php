@@ -12,6 +12,21 @@ echo elgg_view('assessment/formcss');
 //echo $assessment->guid;
 $i = 0;
 $guid = $assessment->guid;
+$containerInput = elgg_view(
+        'input/hidden',array(
+		'name' => 'container_guid',
+		'value' => $guid,)
+	
+        );
+
+$save_button = elgg_view('input/submit', array(
+	'value' => elgg_echo('save'),
+        'id' => 'save',
+       
+	'name' => 'save',
+));
+
+$action_buttons = $save_button . $delete_link;
 
 $questions = array(
 'type' => 'object',
@@ -31,6 +46,13 @@ $allQuestions = elgg_get_entities($questions);
 
 foreach ($allQuestions as $q) {
    $i++; 
+   
+   $questionContainer = elgg_view(
+        'input/hidden',array(
+		'name' => 'radio-'.$q->guid.'[]',
+		'value' => $q->guid,)
+	
+        );
 echo <<<___HTML
 <div class="col-md-12 padding-0 box-v7-comment">
     <b>$questionTitle $i:</b>
@@ -56,15 +78,16 @@ foreach ($allChoices as $c) {
 echo <<<___HTML
     
       <div class="col-sm-12 padding-0">
-              <input type="radio" name="radio-$q->guid" value="$c->title"/>$c->title
+              <input type="radio" name="response[$q->guid]" value="$c->title"/>$c->title
 
-    
+              
    </br>
         </div>
         
 ___HTML;
 }
 echo <<<___HTML
+$questionContainer
 </div>
 ___HTML;
 }
@@ -77,4 +100,10 @@ ___HTML;
 
     
 
+$footer = <<<___HTML
+
+$action_buttons
+___HTML;
+
+elgg_set_form_footer($footer);
 

@@ -14,6 +14,7 @@ function assessment_init() {
     
     $action_base = __DIR__ . '/actions/assessment';
     elgg_register_action('assessment/save', "$action_base/save.php");
+    elgg_register_action('assessment/kickoff', "$action_base/kickoff.php");
     elgg_register_action('assessment/questions/save', "$action_base/questions/save.php");
     
     add_group_tool_option('assessment', elgg_echo('assessment:enableassessment'), true);

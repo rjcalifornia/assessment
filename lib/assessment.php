@@ -83,3 +83,53 @@ if ($container_type) {
 
 return elgg_list_entities($options);
 }
+
+function getCorrectAnswers($questions){
+    $questionList = elgg_get_entities($questions);
+    $testArray = array();
+    
+    foreach ($questionList as $t) {
+    $questionOptions = array(
+'type' => 'object',
+'subtype' => 'options',
+'container_guid' => $t->guid,
+'order_by' => 'e.last_action desc',
+//'limit' => max(20, elgg_get_config('default_limit')),
+'full_view' => false,
+//'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+    $answers= elgg_get_entities($questionOptions);
+    
+    foreach ($answers as $a) {
+        if($a->correct_answer == 1)
+        {
+        $testArray[$t->guid] = $a->title;
+        }
+        }
+    }
+ 
+    
+    return $testArray;
+    
+}
+
+
+function calculateAssessmentResult($v, $correctAnswers, $assessment){
+    
+    $user_responses = unserialize($v->description);
+   // var_dump($user_responses);
+    //echo "</br>";
+    //echo "</br>";
+    
+    $answersComparison = array_intersect($correctAnswers, $user_responses);
+   // print_r($result4);  
+    $score = sizeof($answersComparison);
+    //echo $size;
+    //echo "</br>";
+    $asssessmentResult = ($score / $assessment->min_grade) * 100;
+    
+    return $asssessmentResult;
+    
+}

@@ -18,7 +18,7 @@ return array(
     'assessment:group'=>'Group assesments',
     'assessment:takeoff:question'=>'Question',
     'assessment:in_progress'=>'Assessment is in progress now',
-    ''=>'',
+    'assessment:start'=>'Start assessment',
     ''=>'',
     ''=>'',
     ''=>'',

@@ -44,6 +44,18 @@ $questions = array(
 'preload_containers' => true,
 );
 
+$getResponses = array(
+'type' => 'object',
+'subtype' => 'assessment_results',
+'container_guid' => $assessment->guid,
+'order_by' => 'e.last_action desc',
+'limit' => max(20, elgg_get_config('default_limit')),
+'full_view' => false,
+'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+
 ?>
 <div class="col-md-12" style="padding-top: 1%">
 
@@ -190,7 +202,123 @@ echo  <<<HTML
 HTML;
 
 }
+else{
+?>
 
+ <a href="<?php echo $startUrl; ?>" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
+   <span class="fa fa-check-circle-o"></span>
+       <?php echo elgg_echo('assessment:start'); ?>
+   </a>
+
+<?php
+}
+
+
+
+//$newtesting = elgg_get_entities($questions);
+
+
+
+ //assessment_results
+
+echo $assessment->min_grade;
+//$responses = elgg_get_entities($values);
+if($owner->guid == elgg_get_logged_in_user_guid())
+{
+    $resultsLabel = elgg_echo('assessment:results');
+
+echo  <<<HTML
+
+        <div class="col-md-12" style="padding:15px; margin-top: 35px;">
+            <h1 class="assessment-description"> 
+
+                $resultsLabel
+
+            </h1>
+        </div>
+HTML;
+
+$responses = elgg_get_entities($getResponses);
+//$questionList = elgg_get_entities($questions);
+//var_dump($questionList);
+//$testArray = array();
+/*
+foreach ($questionList as $t) {
+    $questionOptions = array(
+'type' => 'object',
+'subtype' => 'options',
+'container_guid' => $t->guid,
+'order_by' => 'e.last_action desc',
+//'limit' => max(20, elgg_get_config('default_limit')),
+'full_view' => false,
+//'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+    $answers= elgg_get_entities($questionOptions);
+    
+    foreach ($answers as $a) {
+        if($a->correct_answer == 1)
+        {
+        $testArray[$t->guid] = $a->title;
+        }
+        }
+    }
+    */
+if($responses != null)
+{
+$correctAnswers = getCorrectAnswers($questions);
+    var_dump($correctAnswers);
+
+echo "</br>";
+echo "</br>";echo "</br>";echo "</br>";
+
+
+foreach ($responses as $v) {
+    
+    $owner = get_entity($v->owner_guid);
+    
+    echo $owner->name;
+    
+    $userResult = calculateAssessmentResult($v, $correctAnswers, $assessment);
+    echo "</br>";
+    echo $userResult;
+    //echo "</br>";
+    /*
+    $user_responses = unserialize($v->description);
+    var_dump($user_responses);
+    //echo "</br>";
+    //echo "</br>";
+    
+    $result4 = array_intersect($correctAnswers, $user_responses);
+   // print_r($result4);  
+    $size = sizeof($result4);
+    //echo $size;
+    //echo "</br>";
+    $test = ($size / $assessment->min_grade) * 100;
+    
+    echo $test;*/
+echo "</br>";
+echo "</br>";
+    
+}
+} 
+}
+
+//echo "</br>";
+/*
+foreach ($responses as $v) {
+    $owner = get_entity($v->owner_guid);
+echo $owner->name;    
+echo "</br>";
+ $another = unserialize($v->description);
+ 
+ foreach ($another as $key => $e) {
+     echo $key; echo $e;
+     
+ }
+ echo "</br>";
+}*/
 
 /*
 $test = array(
@@ -215,13 +343,3 @@ foreach ($newtest as $value) {
     echo '</br>';
     
 }*/
-else{
-?>
-
- <a href="<?php echo $startUrl; ?>" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
-   <span class="fa fa-check-circle-o"></span>
-       <?php echo elgg_echo('assessment:start'); ?>
-   </a>
-
-<?php
-}
