@@ -49,7 +49,7 @@ $quantityLabel = elgg_echo('assessment:quantity');
 $quantityInput = elgg_view('input/text', array(
 	'name' => 'quantity',
 	'id' => 'assessment_quantity',
-	'value' => $vars['quantity'],
+	'value' => $assessment->question_quantity,
         'required' => true,
 ));
 
@@ -57,7 +57,7 @@ $durationLabel = elgg_echo('assessment:duration');
 $durationInput = elgg_view('input/text', array(
 	'name' => 'duration',
 	'id' => 'assessment_duration',
-	'value' => $vars['duration'],
+	'value' => $assessment->max_duration,
         'required' => true,
 ));
 
@@ -65,7 +65,7 @@ $gradeLabel = elgg_echo('assessment:minimun_grade');
 $gradeInput = elgg_view('input/text', array(
 	'name' => 'minimun_grade',
 	'id' => 'assessment_minimun_grade',
-	'value' => $vars['minimun_grade'],
+	'value' => $assessment->min_grade,
         'required' => true,
 ));
 
@@ -104,7 +104,7 @@ $containerInput = elgg_view(
 $assessment_guid = elgg_view(
         'input/hidden',array(
 		'name' => 'assessment_guid',
-		'value' => $assessment_guid,)
+		'value' => $guid,)
 	
         );
 
@@ -158,7 +158,7 @@ echo <<<___HTML
 	$accessInput
 </div>
 $containerInput
-        
+$assessment_guid        
 ___HTML;
 
 $footer = <<<___HTML

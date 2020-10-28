@@ -23,7 +23,7 @@ elgg_make_sticky_form('assessment');
 
 // validation of inputs
 if (!$title || !$desc) {
-	register_error(elgg_echo('discussion:error:missing'));
+	register_error(elgg_echo('assessment:error:missing'));
 	forward(REFERER);
 }
 
@@ -43,7 +43,7 @@ if ($new_assessment) {
 	// load original file object
 	$assessment = get_entity($guid);
 	if (!elgg_instanceof($assessment, 'object', 'assessment') || !$assessment->canEdit()) {
-		register_error(elgg_echo('assessment:topic:notfound'));
+		register_error(elgg_echo('assessment:notfound'));
 		forward(REFERER);
 	}
 }
@@ -69,7 +69,7 @@ $assessment->tags = string_to_tag_array($tags);
 $result = $assessment->save();
 
 if (!$result) {
-	register_error(elgg_echo('lessons:error:notsaved'));
+	register_error(elgg_echo('assessment:error:notsaved'));
 	forward(REFERER);
 }
 
@@ -79,7 +79,7 @@ elgg_clear_sticky_form('assessment');
 
 // handle results differently for new topics and topic edits
 if ($new_assessment) {
-	system_message(elgg_echo('lessons:topic:created'));
+	system_message(elgg_echo('assessment:created'));
 
 	elgg_create_river_item(array(
 		'view' => 'river/object/assessment/create',
@@ -89,7 +89,7 @@ if ($new_assessment) {
 		'target_guid' => $container_guid,
 	));
 } else {
-	system_message(elgg_echo('lessons:topic:updated'));
+	system_message(elgg_echo('assessment:updated'));
 }
 
 forward($assessment->getURL());

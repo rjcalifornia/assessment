@@ -12,6 +12,16 @@ echo elgg_view('assessment/formcss');
 //echo $assessment->guid;
 $i = 0;
 $guid = $assessment->guid;
+
+$loggedUser = elgg_get_logged_in_user_guid();
+$userResponse = getUserResponse($loggedUser, $assessment->guid);
+
+if($userResponse != null || $assessment->status == 'closed')
+{
+    register_error(elgg_echo('actionunauthorized'));
+    forward($assessment->getURL());
+}
+
 $containerInput = elgg_view(
         'input/hidden',array(
 		'name' => 'container_guid',

@@ -17,8 +17,10 @@ $siteUrl = elgg_get_site_url();
 
 $owner = $details->getOwnerEntity();
 
+$loggedUser = elgg_get_logged_in_user_guid();
+$loggedUserDetails = elgg_get_logged_in_user_entity();
+//echo $loggedUser;
 
-$add_url = "{$siteUrl}assessment/add_question/{$assessment->guid}";
 
 $startUrl = "{$siteUrl}assessment/kickoff/{$assessment->guid}";
 
@@ -37,24 +39,20 @@ $questions = array(
 'subtype' => 'questions',
 'container_guid' => $assessment->guid,
 'order_by' => 'e.last_action desc',
-'limit' => max(20, elgg_get_config('default_limit')),
+'limit' => 4,
 'full_view' => false,
 'no_results' => elgg_echo('questions:none'),
 'preload_owners' => true,
 'preload_containers' => true,
 );
 
-$getResponses = array(
-'type' => 'object',
-'subtype' => 'assessment_results',
-'container_guid' => $assessment->guid,
-'order_by' => 'e.last_action desc',
-'limit' => max(20, elgg_get_config('default_limit')),
-'full_view' => false,
-'no_results' => elgg_echo('questions:none'),
-'preload_owners' => true,
-'preload_containers' => true,
-);
+$allQuestions = getAllQuestions($assessment->guid);
+
+//var_dump($allQuestions);
+$getResponses = getAllAssessmentResponses($assessment->guid);
+
+$responses = elgg_get_entities($getResponses);
+
 
 ?>
 <div class="col-md-12" style="padding-top: 1%">
@@ -166,52 +164,39 @@ $getResponses = array(
 
 <?php
 
-if($owner->guid == elgg_get_logged_in_user_guid())
+echo elgg_view('resources/assessment/elements/owner_options', 
+        array(
+            'owner' => $owner,
+            'questions' => $questions,
+            'site_url' => $siteUrl,
+            'entity' => $assessment->guid
+            ));
+$questionsAdded = getAmountQuestions($allQuestions);
+$assessmentQuestionsQuantity = intval($assessment->question_quantity);
+
+//echo $questionsAdded;
+//echo $assessmentQuestionsQuantity;
+echo elgg_view('resources/assessment/elements/user_options', 
+        array(
+            'owner' => $owner,
+            'questions_added'  => $questionsAdded,
+            'assessment_questions_quantity' => $assessmentQuestionsQuantity,
+            'start_url' => $startUrl,
+            'all_questions' => $allQuestions,
+            'logged_user' => $loggedUser,
+            'user_details' => $loggedUserDetails,
+            'entity' => $assessment->guid
+            ));
+
+
+if($owner->guid != $loggedUser)
 {
-$label= elgg_echo('assessment:add_question');
+    $userResponse = getUserResponse($loggedUser, $assessment->guid);
 
-
-
-?>
-<div class="col-md-12" style="padding:15px;">
-<h2 class="assessment-questions"> 
-              
-    <?php
-        echo elgg_echo('assessment:questions_options');
-        
-    ?>
-     
-</h2>
-
-<?php
-
-echo elgg_list_entities($questions);
-    
-
-?>
-</div>
-<?php
-
-
-echo  <<<HTML
-    <a href="$add_url" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
-              <span class="fa fa-arrow-circle-down"></span> 
-              $label
-          </a>
-
-HTML;
-
+//var_dump($userResponse);
 }
-else{
-?>
 
- <a href="<?php echo $startUrl; ?>" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
-   <span class="fa fa-check-circle-o"></span>
-       <?php echo elgg_echo('assessment:start'); ?>
-   </a>
-
-<?php
-}
+//echo sizeof($allQuestions);
 
 
 
@@ -221,7 +206,7 @@ else{
 
  //assessment_results
 
-echo $assessment->min_grade;
+//echo $assessment->min_grade;
 //$responses = elgg_get_entities($values);
 if($owner->guid == elgg_get_logged_in_user_guid())
 {
@@ -238,7 +223,7 @@ echo  <<<HTML
         </div>
 HTML;
 
-$responses = elgg_get_entities($getResponses);
+
 //$questionList = elgg_get_entities($questions);
 //var_dump($questionList);
 //$testArray = array();
@@ -267,41 +252,47 @@ foreach ($questionList as $t) {
     */
 if($responses != null)
 {
-$correctAnswers = getCorrectAnswers($questions);
-    var_dump($correctAnswers);
+$correctAnswers = getCorrectAnswers($allQuestions);
+    //var_dump(serialize($correctAnswers));
+  //var_dump($correctAnswers);
+//echo "</br>";
+//echo "</br>";echo "</br>";echo "</br>";
 
-echo "</br>";
-echo "</br>";echo "</br>";echo "</br>";
+echo elgg_view('resources/assessment/elements/results_table', 
+        array(
+            'responses' => $responses,
+            'correct_answers' => $correctAnswers,
+            'entity' => $assessment->guid,
+            ));
 
-
-foreach ($responses as $v) {
+//foreach ($responses as $v) {
     
-    $owner = get_entity($v->owner_guid);
+    //$owner = get_entity($v->owner_guid);
     
-    echo $owner->name;
+ //  echo $owner->name;
     
-    $userResult = calculateAssessmentResult($v, $correctAnswers, $assessment);
-    echo "</br>";
-    echo $userResult;
-    //echo "</br>";
-    /*
-    $user_responses = unserialize($v->description);
-    var_dump($user_responses);
-    //echo "</br>";
+    //$userResult = calculateAssessmentResult($v->description, $correctAnswers, $assessment);
+   // echo "</br>";
+    //echo $userResult;
     //echo "</br>";
     
-    $result4 = array_intersect($correctAnswers, $user_responses);
+ //   $user_responses = unserialize($v->description);
+   // var_dump($user_responses);
+    //echo "</br>";
+    //echo "</br>";
+    
+   // $result4 = array_intersect($correctAnswers, $user_responses);
    // print_r($result4);  
-    $size = sizeof($result4);
+    //$size = sizeof($result4);
     //echo $size;
     //echo "</br>";
-    $test = ($size / $assessment->min_grade) * 100;
+    //$test = ($size / $assessment->min_grade) * 100;
     
-    echo $test;*/
-echo "</br>";
-echo "</br>";
+    //echo $test;
+//echo "</br>";
+//echo "</br>";
     
-}
+//}
 } 
 }
 

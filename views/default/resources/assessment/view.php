@@ -7,7 +7,8 @@ elgg_register_rss_link();
 elgg_entity_gatekeeper($guid, 'object', 'assessment');
 
 $assessment = get_entity($guid);
-
+elgg_extend_view('page/elements/head', 'assessment/datatable');
+elgg_require_js("assessment/datatable");
 
 //elgg_extend_view('page/elements/head', 'lessons/scripts');
 

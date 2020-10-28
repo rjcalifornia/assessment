@@ -5,6 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+$ia = elgg_set_ignore_access(true);
+elgg_set_ignore_access(true);
 $container_guid = (int) get_input('container_guid');
 
 $responses = get_input("response");
@@ -42,5 +44,8 @@ foreach ($responses as $question_guid => $response) {
     
 }*/
 
-system_message(elgg_echo($container_guid));
+//system_message(elgg_echo($container_guid));
+system_message(elgg_echo('assessment:user:finished'));
+forward($assessment->getURL());
+
 //echo $container_guid;

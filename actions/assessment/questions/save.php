@@ -12,7 +12,7 @@ $answers = get_input("mytext");
 $assessment = get_entity($container_guid);
 
 if (!$title /*|| !$options*/) {
-	register_error(elgg_echo('assessment:error:missing'));
+	register_error(elgg_echo('question:error:missing'));
 	forward(REFERER);
 }
 
@@ -29,7 +29,7 @@ if ($new_question) {
 	// load original file object
 	$question = get_entity($guid);
 	if (!elgg_instanceof($question, 'object', 'questions') || !$assessment->canEdit()) {
-		register_error(elgg_echo('question:topic:notfound'));
+		register_error(elgg_echo('question:notfound'));
 		forward(REFERER);
 	}
 }
@@ -70,5 +70,5 @@ foreach ($answers as $key => $val) {
     }
     
 }
-
+system_message(elgg_echo('question:added'));
 forward($assessment->getURL());

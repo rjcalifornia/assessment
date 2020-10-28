@@ -84,6 +84,36 @@ if ($container_type) {
 return elgg_list_entities($options);
 }
 
+function getAmountQuestions($allQuestions){
+    $questions = elgg_get_entities($allQuestions);
+    $counter = 0;
+    foreach ($questions as $q)
+    {
+        $counter++;
+    }
+    return intval($counter);
+}
+
+function getUserScore($assessmentGuid, $allQuestions, $loggedUser){
+  $userAnswers =   getUserResponse($loggedUser, $assessmentGuid);
+  
+  $correctAnswers = getCorrectAnswers($allQuestions);
+  
+  $assessment = get_entity($assessmentGuid);
+  
+  $userScore = null;
+  
+  foreach ($userAnswers as $v) {
+      
+  
+  $userScore = calculateAssessmentResult($v->description, $correctAnswers, $assessment);
+  
+  }
+  
+  return $userScore;
+    
+}
+
 function getCorrectAnswers($questions){
     $questionList = elgg_get_entities($questions);
     $testArray = array();
@@ -118,18 +148,71 @@ function getCorrectAnswers($questions){
 
 function calculateAssessmentResult($v, $correctAnswers, $assessment){
     
-    $user_responses = unserialize($v->description);
-   // var_dump($user_responses);
+    $user_responses = unserialize($v);
+    //var_dump($user_responses);
+     //var_dump($correctAnswers);
     //echo "</br>";
     //echo "</br>";
     
-    $answersComparison = array_intersect($correctAnswers, $user_responses);
+    $answersComparison = array_intersect_assoc($correctAnswers, $user_responses);
    // print_r($result4);  
     $score = sizeof($answersComparison);
+    
+    $totalQuestions = sizeof($correctAnswers);
     //echo $size;
     //echo "</br>";
-    $asssessmentResult = ($score / $assessment->min_grade) * 100;
+    $asssessmentResult = ($score / $totalQuestions) * 10;
     
-    return $asssessmentResult;
+    return round($asssessmentResult, 2);
     
+}
+
+function getAllQuestions($assessmentGuid){
+    $allQuestions = array(
+'type' => 'object',
+'subtype' => 'questions',
+'container_guid' => $assessmentGuid,
+'order_by' => 'e.last_action desc',
+//'limit' => 0,
+'full_view' => false,
+'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+    
+    return $allQuestions;
+}
+
+function getAllAssessmentResponses($assessmentGuid){
+    
+$getResponses = array(
+'type' => 'object',
+'subtype' => 'assessment_results',
+'container_guid' => $assessmentGuid,
+'order_by' => 'e.last_action desc',
+'limit' => 0,
+'full_view' => false,
+'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+return $getResponses;
+}
+
+function getUserResponse($loggedUser, $assessmentGuid){
+  $getUserResponse = array(
+'type' => 'object',
+'subtype' => 'assessment_results',
+'container_guid' => $assessmentGuid,
+'owner_guid' => $loggedUser,
+'order_by' => 'e.last_action desc',
+'limit' => 0,
+'full_view' => false,
+'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+  
+  $getResponses = elgg_get_entities($getUserResponse);
+return $getResponses;  
 }

@@ -6,6 +6,10 @@
  * and open the template in the editor.
  */
 
+elgg_gatekeeper();
+
+$current_user = elgg_get_logged_in_user_entity();
+
 
 
 $guid = elgg_extract('guid', $vars);
@@ -16,7 +20,10 @@ elgg_entity_gatekeeper($guid, 'object', 'questions');
 
 $question = get_entity($guid);
 
-
+if (!$question->canWriteToContainer(0, 'object', 'assessment')) {
+	register_error(elgg_echo('actionunauthorized'));
+	forward(REFERER);
+}
 
 
 $container = $question->getContainerEntity();
@@ -37,7 +44,14 @@ $title = elgg_echo('assessment:question:single');
 
 $content = elgg_view_entity($question, array('full_view' => true));
 
-$content .= elgg_echo('assessment:choices');
+$optionsLabel = elgg_echo('assessment:choices');
+$content .=<<<HTML
+    <div class="col-md-12" style="padding:10px;">
+        
+    <h3>$optionsLabel</h3>
+    </div>
+HTML;
+
 
 
 $options = array(
@@ -52,17 +66,34 @@ $options = array(
 'preload_containers' => true,
 );
 $answers= elgg_get_entities($options);
-
+$correctAnswer = null;
+$correctLabel = elgg_echo('single:correct:answer');
 foreach ($answers as $a) {
-    
-  $content .=  $a->title;
-  
-    $content .=  $a->correct_answer;
-  $content .= '</br>';  
+  $content.=  <<<HTML
+    <div class="col-md-12" style="padding-left:25px; padding-top: 10px;">
+        
+   <span class="fa fa-angle-double-right"></span> <b>$a->title</b>
+    </div>
+HTML;
+  //$content .=  $a->title;
+  if($a->correct_answer == 1)
+  {
+      $correctAnswer = $a->title;
+  }
+    //$content .=  $a->correct_answer;
+  //$content .= '</br>';  
     
    // echo '</br>';
     
 }
+
+  $content.=  <<<HTML
+    <div class="col-md-12" style="padding:20px;">
+        
+   <h3>  $correctLabel:</h3> 
+       <p><span class="fa fa-check"></span> <b>$correctAnswer</b></p>
+    </div>
+HTML;
 
 //$content .= $test;
 $params = array(
@@ -75,7 +106,7 @@ $params = array(
 
 $body = elgg_view_layout('content', $params);
 
-echo elgg_view_page($topic->title, $body);
+echo elgg_view_page($title, $body);
 /*$questions = get_entity($guid);
 
 var_dump($questions);
