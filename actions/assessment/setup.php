@@ -34,7 +34,7 @@ $attempt->container_guid = $assessment->guid;
 $attempt->title = $assessment->title;
 $attempt->owner_guid = $user->guid;
 $attempt->description = $user->name;        
-//$attempt->save();
+$attempt->save();
 
 $siteUrl = elgg_get_site_url();
 

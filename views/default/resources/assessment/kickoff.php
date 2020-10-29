@@ -13,7 +13,7 @@ $guid = elgg_extract('guid', $vars);
 $loggedUser = elgg_get_logged_in_user_guid();
 elgg_entity_gatekeeper($guid);
 elgg_group_gatekeeper(true, $guid);
-$token = get_input('token');
+//$token = get_input('token');
 //var_dump($token);
 $container = get_entity($guid);
 //echo time();
@@ -28,7 +28,7 @@ if($token == null){
     register_error(elgg_echo('actionunauthorized'));
 	forward(REFERER);
 }*/
-$attempts = checkUserAttempts($container->guid, $loggedUser);
+//$attempts = checkUserAttempts($container->guid, $loggedUser);
 /*
 if($attempts != null)
 {
