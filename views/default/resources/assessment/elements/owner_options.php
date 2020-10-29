@@ -11,7 +11,7 @@ $entity = $vars['entity'];
 $owner = $vars['owner'];
 $questions = $vars['questions'];
 $siteUrl = $vars['site_url'];
-
+$questionsAdded = $vars['questions_added'];
 $assessment = get_entity($entity);
 
 $add_url = "{$siteUrl}assessment/add_question/{$assessment->guid}";
@@ -32,9 +32,30 @@ $label= elgg_echo('assessment:add_question');
     ?>
      
 </h2>
+    
+    <h4 class="assessment-quantity-added"> 
+              
+    <?php
+        echo elgg_echo('assessment:questions:added'); 
+        echo $questionsAdded;
+    ?>
+        
+     
+</h4>
+    
+     <p class="assessment-alert"> 
+              
+    <?php
+        echo elgg_echo('assessment:questions:alert'); 
+        
+    ?>
+        
+     
+</p>
+
 
 <?php
-
+//echo $questionsAdded;
 echo elgg_list_entities($questions);
     
 

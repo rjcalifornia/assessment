@@ -14,6 +14,7 @@ function assessment_init() {
     
     $action_base = __DIR__ . '/actions/assessment';
     elgg_register_action('assessment/save', "$action_base/save.php");
+    elgg_register_action('assessment/setup', "$action_base/setup.php");
     elgg_register_action('assessment/kickoff', "$action_base/kickoff.php");
     elgg_register_action('assessment/questions/save', "$action_base/questions/save.php");
     

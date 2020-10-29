@@ -39,7 +39,7 @@ $questions = array(
 'subtype' => 'questions',
 'container_guid' => $assessment->guid,
 'order_by' => 'e.last_action desc',
-'limit' => 4,
+'limit' => 5,
 'full_view' => false,
 'no_results' => elgg_echo('questions:none'),
 'preload_owners' => true,
@@ -164,15 +164,18 @@ $responses = elgg_get_entities($getResponses);
 
 <?php
 
+$questionsAdded = getAmountQuestions($allQuestions);
+$assessmentQuestionsQuantity = intval($assessment->question_quantity);
+
 echo elgg_view('resources/assessment/elements/owner_options', 
         array(
             'owner' => $owner,
             'questions' => $questions,
             'site_url' => $siteUrl,
+            'questions_added'  => $questionsAdded,
             'entity' => $assessment->guid
             ));
-$questionsAdded = getAmountQuestions($allQuestions);
-$assessmentQuestionsQuantity = intval($assessment->question_quantity);
+
 
 //echo $questionsAdded;
 //echo $assessmentQuestionsQuantity;

@@ -53,3 +53,12 @@ display: -webkit-box;
     margin-bottom: 5px;
     color: var(--tutor-light-color);
 }
+
+.assessment-quantity-added{
+color: var(--tutor-light-color);
+}
+
+.assessment-alert{
+font-size: 10px;
+color: #f07575;
+}

@@ -173,7 +173,7 @@ function getAllQuestions($assessmentGuid){
 'subtype' => 'questions',
 'container_guid' => $assessmentGuid,
 'order_by' => 'e.last_action desc',
-//'limit' => 0,
+'limit' => 0,
 'full_view' => false,
 'no_results' => elgg_echo('questions:none'),
 'preload_owners' => true,
@@ -215,4 +215,24 @@ function getUserResponse($loggedUser, $assessmentGuid){
   
   $getResponses = elgg_get_entities($getUserResponse);
 return $getResponses;  
+}
+
+
+function checkUserAttempts($assessmentGuid, $loggedUser){
+       
+$getUserAttempt = array(
+'type' => 'object',
+'subtype' => 'assessment_attempt',
+'container_guid' => $assessmentGuid,
+'owner_guid' => $loggedUser,
+'order_by' => 'e.last_action desc',
+'limit' => 0,
+'full_view' => false,
+'no_results' => elgg_echo('questions:none'),
+'preload_owners' => true,
+'preload_containers' => true,
+);
+  
+  $attempts = elgg_get_entities($getUserAttempt);
+return $attempts;  
 }

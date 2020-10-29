@@ -41,7 +41,16 @@ return array(
     'assessment:status:finished'=>'You answered this assessment',
     'assessment:pending'=>'Assessment is not available yet',
     'assessment:individual:score'=>'Score obtained:',
+    'assessment:enableassessment'=>'Enable assessments',
+    'assessment:none'=>'No assessments available',
+    'assessment:questions:added'=>'Added questions: ',
+    'assessment:questions:alert'=>'Users will not be able to take the test if the minimum number of required questions are not provided.',
     ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    
 
     
 );

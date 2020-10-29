@@ -12,23 +12,37 @@ $owner = $vars['owner'];
 $questionsAdded = $vars['questions_added'];
 $assessmentQuestionsQuantity = $vars['assessment_questions_quantity'];
 $startUrl = $vars['start_url'];
+$siteUrl = elgg_get_site_url();
+
 $allQuestions = $vars['all_questions'];
 $loggedUser = $vars['logged_user'];
 $loggedUserDetails = $vars['user_details'];
 $assessment = get_entity($entity);
 
+$setupActionUrl = "{$siteUrl}action/assessment/setup?container_guid={$assessment->guid}";
+$testin = '<span class="fa fa-check-circle-o"></span> ';
 if($owner->guid != elgg_get_logged_in_user_guid() && $questionsAdded >= $assessmentQuestionsQuantity && $assessment->status == 'open'){
     $userResponse = getUserResponse($loggedUser, $assessment->guid);
     $finishedLabel = elgg_echo('assessment:status:finished');
     if($userResponse == null)
     {
         
+        $setupLink = elgg_view('output/url', array(
+            'href'=> $setupActionUrl,
+            'text' => $testin . elgg_echo('assessment:start'),
+            'class' => 'elgg-menu-content elgg-button elgg-button-action extras-reading',
+            'confirm'=> true,
+        )
+                );
+       
 ?>
 <div style="padding: 25px;">
- <a href="<?php echo $startUrl; ?>" class="elgg-menu-content elgg-button elgg-button-action extras-reading">
-   <span class="fa fa-check-circle-o"></span>
-       <?php echo elgg_echo('assessment:start'); ?>
-   </a>
+ 
+       <?php 
+            //echo elgg_echo('assessment:start'); 
+       echo $setupLink;
+        ?>
+    
 </div>
 <?php
 
