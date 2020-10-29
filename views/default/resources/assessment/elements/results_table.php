@@ -40,7 +40,7 @@ $i = 0;
                 <td><?php echo $userResult;
                // echo $v->description;
                 ?></td>
-                <td>View responses</td>
+                <td>View responses (Coming soon...)</td>
                  
             </tr>
                 <?php }?>

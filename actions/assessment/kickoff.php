@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+elgg_load_library('elgg:assessment');
 $ia = elgg_set_ignore_access(true);
 elgg_set_ignore_access(true);
 $container_guid = (int) get_input('container_guid');
@@ -18,7 +19,18 @@ if (empty($responses)) {
 	register_error(elgg_echo("assessment:noresponse"));
 	forward(REFERER);
 }
+
 $user = elgg_get_logged_in_user_entity();
+$attempts = getUserResponse($user->guid,$assessment->guid);
+
+if($attempts != null)
+{
+    register_error(elgg_echo('assessment:already:taken'));
+    forward(REFERER);
+}
+
+
+//$user = elgg_get_logged_in_user_entity();
 
 $result = new ElggObject();
 $result->subtype = 'assessment_results';

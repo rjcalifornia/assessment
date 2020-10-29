@@ -88,7 +88,7 @@ foreach ($allChoices as $c) {
 echo <<<___HTML
     
       <div class="col-sm-12 padding-0">
-              <input type="radio" name="response[$q->guid]" value="$c->title"/>$c->title
+              <input type="radio" name="response[$q->guid]" value="$c->title" required/>$c->title
 
               
    </br>

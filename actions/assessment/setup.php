@@ -23,7 +23,7 @@ $attempts = checkUserAttempts($assessment->guid, $user->guid);
 
 if($attempts != null)
 {
-    register_error(elgg_echo('actionunauthorized'));
+    register_error(elgg_echo('assessment:already:taken'));
     forward(REFERER);
 }
 else{
