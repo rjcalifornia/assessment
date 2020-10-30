@@ -24,12 +24,12 @@ use timed/not timed assessments, grades reported back to the grade book, group a
 - Automated quiz results
 - Compatible with Tutor LMS plugin
 - View user's assessment responses
+- Timed assessments
 
 ## To do
 
 - Notify via email the results of the assessment to the user
 - Edit questions and answers
-- Add a timer to the assessment
 - Add how many times a user can take an assessment
 - Let users view their responses
 - Random order of the questions
