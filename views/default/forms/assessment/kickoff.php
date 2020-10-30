@@ -29,6 +29,15 @@ $containerInput = elgg_view(
 	
         );
 
+$dr = ($assessment->max_duration *60);
+$containerInputDetail = elgg_view(
+        'input/hidden',array(
+		'name' => 'container_guid_details',
+                'id' => 'container_guid_details',
+		'value' => $dr,)
+	
+        );
+
 $save_button = elgg_view('input/submit', array(
 	'value' => elgg_echo('save'),
         'id' => 'save',
@@ -53,6 +62,10 @@ $questions = array(
 $questionTitle = elgg_echo('assessment:takeoff:question');
 
 $allQuestions = elgg_get_entities($questions);
+
+echo <<<___HTML
+<span id="timer"></span>
+___HTML;
 
 foreach ($allQuestions as $q) {
    $i++; 
@@ -105,7 +118,7 @@ ___HTML;
 echo <<<___HTML
 
 $containerInput
-
+$containerInputDetail
 ___HTML;
 
     

@@ -52,7 +52,14 @@ $allQuestions = getAllQuestions($assessment->guid);
 $getResponses = getAllAssessmentResponses($assessment->guid);
 
 $responses = elgg_get_entities($getResponses);
-
+$dr = ($assessment->max_duration *60);
+$containerInputDetail = elgg_view(
+        'input/hidden',array(
+		'name' => 'container_guid_details',
+                'id' => 'container_guid_details',
+		'value' => $dr,)
+	
+        );
 
 ?>
 <div class="col-md-12" style="padding-top: 1%">

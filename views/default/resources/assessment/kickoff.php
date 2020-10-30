@@ -15,6 +15,7 @@ elgg_entity_gatekeeper($guid);
 elgg_group_gatekeeper(true, $guid);
 $token = $_SERVER['HTTP_REFERER'];
 //var_dump($token);
+elgg_require_js("assessment/max_duration");
 
 $container = get_entity($guid);
 //echo $container->getURL();

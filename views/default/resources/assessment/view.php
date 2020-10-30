@@ -10,11 +10,7 @@ $assessment = get_entity($guid);
 elgg_extend_view('page/elements/head', 'assessment/datatable');
 elgg_require_js("assessment/datatable");
 
-//elgg_extend_view('page/elements/head', 'lessons/scripts');
-
 $container = $assessment->getContainerEntity();
-
-//elgg_require_js('elgg/lessons');
 
 elgg_set_page_owner_guid($container->getGUID());
 
