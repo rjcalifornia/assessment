@@ -77,6 +77,14 @@ function assessment_page_handler($page) {
 			
 			echo elgg_view_resource('assessment/edit', $resource_vars);
 			break;
+                    
+                case 'result':
+			$resource_vars['guid'] = elgg_extract(1, $page);
+			//$resource_vars['user_guid'] = elgg_extract(2, $page);
+			
+			echo elgg_view_resource('assessment/result', $resource_vars);
+			break;
+                    
 		case 'group':
                 
 			

@@ -10,6 +10,9 @@ $correctAnswers = $vars['correct_answers'];
 $entity = $vars['entity'];
 $assessment = get_entity($entity);
 $i = 0;
+$siteUrl = elgg_get_site_url();
+
+
 ?>
 
 
@@ -29,6 +32,7 @@ $i = 0;
                     $i++;
                 $owner = get_entity($v->owner_guid);
                 $userResult = calculateAssessmentResult($v->description, $correctAnswers, $assessment);
+                $view_result_url = "{$siteUrl}assessment/result/{$assessment->guid}?user_guid={$v->owner_guid}";
             ?>
             <tr>
                 <td>
@@ -40,7 +44,11 @@ $i = 0;
                 <td><?php echo $userResult;
                // echo $v->description;
                 ?></td>
-                <td>View responses (Coming soon...)</td>
+                <td>
+                    <a href="<?php echo $view_result_url;?>">
+                    View responses (Coming soon...)
+                    </a>
+                </td>
                  
             </tr>
                 <?php }?>

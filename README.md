@@ -23,10 +23,10 @@ use timed/not timed assessments, grades reported back to the grade book, group a
 - Export grades to a CSV file
 - Automated quiz results
 - Compatible with Tutor LMS plugin
+- View user's assessment responses
 
 ## To do
 
-- View individual user responses
 - Notify via email the results of the assessment to the user
 - Edit questions and answers
 - Add a timer to the assessment
@@ -34,7 +34,3 @@ use timed/not timed assessments, grades reported back to the grade book, group a
 - Let users view their responses
 - Random order of the questions
 - Improve image support
-
-
-
-
